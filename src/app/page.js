@@ -1,95 +1,198 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+import React, { useState } from "react";
+import { generateResponse } from "../app/api";
 
-export default function Home() {
+const TripPlanner = () => {
+  const [responseText, setResponseText] = useState(undefined);
+  const [formData, setFormData] = useState({
+    Name: "",
+    location: "",
+    destination: "",
+    startDate: "",
+    endDate: "",
+    numPeople: 1,
+    budget: "",
+    tripType: "Select Type",
+    additionalInfo: "",
+  });
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+    let reqBody = {
+      Name: formData.Name,
+      location: formData.location,
+      destination: formData.destination,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+      numPeople: formData.numPeople,
+      budget: formData.budget,
+      tripType: formData.tripType,
+      additionalInfo: formData.additionalInfo,
+    };
+    const response = await generateResponse(reqBody);
+    setResponseText(response.data.response.content);
+
+    console.log("------");
+    console.log(response.data.response.content);
+    console.log("------");
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
+    <>
+      <div className="container1">
+        <h1 className="texthead">Your Next Trip Planner</h1>
+
+        <form onSubmit={handleFormSubmit}>
+          <label htmlFor="destination">Your Name</label>
+          <input
+            type="text"
+            id="Name"
+            name="Name"
+            value={formData.Name}
+            onChange={(e) => setFormData({ ...formData, Name: e.target.value })}
+            required
+          />
+
+          <label htmlFor="location">Current location</label>
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={(e) =>
+              setFormData({ ...formData, location: e.target.value })
+            }
+            required
+          />
+          <label htmlFor="destination">Where do you want to go?</label>
+          <input
+            type="text"
+            id="destination"
+            name="destination"
+            value={formData.destination}
+            onChange={(e) =>
+              setFormData({ ...formData, destination: e.target.value })
+            }
+            required
+          />
+
+          <div className="">
+            <div className="date-range row">
+              <div className="date-field col-lg-6 col-md-6 col-sm-12">
+                <label htmlFor="startDate">From Date : </label>
+                <input
+                  type="date"
+                  id="startDate"
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
+              <div className="date-field col-lg-6 col-md-6 col-sm-12">
+                <label htmlFor="endDate">To Date : </label>
+                <input
+                  type="date"
+                  id="endDate"
+                  name="endDate"
+                  value={formData.endDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endDate: e.target.value })
+                  }
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <label htmlFor="numPeople">How many people are going?</label>
+          <div className="num-people">
+            <input
+              type="number"
+              id="numPeople"
+              name="numPeople"
+              value={formData.numPeople}
+              onChange={(e) =>
+                setFormData({ ...formData, numPeople: e.target.value })
+              }
+              required
             />
-          </a>
-        </div>
+            <span
+              style={{ cursor: "pointer", margin: "5px" }}
+              onClick={() =>
+                setFormData({
+                  ...formData,
+                  numPeople: Math.max(formData.numPeople - 1, 1),
+                })
+              }
+            >
+              -
+            </span>
+            <span
+              style={{ cursor: "pointer", margin: "5px" }}
+              onClick={() =>
+                setFormData({ ...formData, numPeople: formData.numPeople + 1 })
+              }
+            >
+              +
+            </span>
+          </div>
+
+          <label htmlFor="budget">
+            How much do you plan to spend on this trip? (Optional)
+          </label>
+          <input
+            type="number"
+            id="budget"
+            name="budget"
+            value={formData.budget}
+            onChange={(e) =>
+              setFormData({ ...formData, budget: e.target.value })
+            }
+          />
+
+          <label htmlFor="tripType">What type of trip is this?</label>
+          <select
+            className="mt-1"
+            id="tripType"
+            name="tripType"
+            value={formData.tripType}
+            onChange={(e) =>
+              setFormData({ ...formData, tripType: e.target.value })
+            }
+          >
+            <option value="Select Type">Select Type</option>
+            <option value="relaxation">Relaxation</option>
+            <option value="adventure">Adventure</option>
+            <option value="tourism">Tourism</option>
+            <option value="festival">Festival</option>
+          </select>
+
+          <label htmlFor="additionalInfo">
+            Do you want to tell us something our holiday planner should take
+            into account about your trip?
+          </label>
+          <textarea
+            className="mt-1"
+            id="additionalInfo"
+            name="additionalInfo"
+            value={formData.additionalInfo}
+            onChange={(e) =>
+              setFormData({ ...formData, additionalInfo: e.target.value })
+            }
+          />
+
+          <button type="submit" className="create-button">
+            Create My Trip
+          </button>
+          <div>
+            {responseText && <p className="mt-3">{`${responseText}`}</p>}
+          </div>
+        </form>
       </div>
+    </>
+  );
+};
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
-}
+export default TripPlanner;
