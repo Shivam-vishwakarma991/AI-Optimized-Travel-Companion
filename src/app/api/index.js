@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const apiUrl = "http://127.0.0.1:5000/generate-completion";
+const apiUrl = `${process.env.NEXT_PUBLIC_LOCAL_SERVER}/generate-completion`;
 
 export const generateResponse = async (reqBody) =>
   await axios.post(apiUrl, reqBody);

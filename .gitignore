@@ -22,6 +22,8 @@ dist/
 # Maven
 target/
 dist/
+.next
+.env
 
 # JetBrains IDE
 .idea/

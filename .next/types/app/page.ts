@@ -1,4 +1,4 @@
-// File: /Users/askgalore/Documents/TripPlanner/trip-planner/src/app/page.js
+// File: C:\Ketan\AI-Travel\src\app\page.js
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
