@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { generateResponse } from "../app/api";
 
 const TripPlanner = () => {
-  const [loading, setloading]= useState(false)
+  const [loading, setloading] = useState(false);
   const [responseText, setResponseText] = useState(undefined);
   const [formData, setFormData] = useState({
     Name: "",
@@ -18,7 +18,7 @@ const TripPlanner = () => {
   });
 
   const handleFormSubmit = async (e) => {
-    setloading(true)
+    setloading(true);
     e.preventDefault();
     let reqBody = {
       Name: formData.Name,
@@ -35,9 +35,12 @@ const TripPlanner = () => {
       const response = await generateResponse(reqBody);
       setResponseText(response.data.response.content);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     } finally {
-      setloading(false); 
+      setloading(false);
+     
+
+
     }
   };
 
@@ -85,30 +88,30 @@ const TripPlanner = () => {
               <div className="date-field col-lg-6 col-md-6 col-sm-12">
                 <label htmlFor="startDate">From Date : </label>
                 <input
-  type="date"
-  id="startDate"
-  min={new Date().toISOString().split('T')[0]}
-  name="startDate"
-  value={formData.startDate}
-  onChange={(e) =>
-    setFormData({ ...formData, startDate: e.target.value })
-  }
-  required
-/>
+                  type="date"
+                  id="startDate"
+                  min={new Date().toISOString().split("T")[0]}
+                  name="startDate"
+                  value={formData.startDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startDate: e.target.value })
+                  }
+                  required
+                />
               </div>
               <div className="date-field col-lg-6 col-md-6 col-sm-12">
                 <label htmlFor="endDate">To Date : </label>
                 <input
-  type="date"
-  id="endDate"
-  name="endDate"
-  min={formData.startDate} 
-  value={formData.endDate}
-  onChange={(e) =>
-    setFormData({ ...formData, endDate: e.target.value })
-  }
-  required
-/>
+                  type="date"
+                  id="endDate"
+                  name="endDate"
+                  min={formData.startDate}
+                  value={formData.endDate}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endDate: e.target.value })
+                  }
+                  required
+                />
               </div>
             </div>
           </div>
@@ -190,10 +193,15 @@ const TripPlanner = () => {
           />
 
           <button type="submit" className="create-button">
-          {loading ? "Loading..." : "Create My Trip"}
+            {loading ? "Loading..." : "Create My Trip"}
           </button>
           <div>
-            {responseText && <p className="mt-3">{`${responseText}`}</p>}
+
+          <div className="mt-3">
+  {responseText.split('\n').map((line, index) => (
+    <p key={index}>{line}</p>
+  ))}
+</div>
           </div>
         </form>
       </div>

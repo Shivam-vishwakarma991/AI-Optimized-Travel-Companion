@@ -30,6 +30,7 @@ app.post("/generate-completion", async (req, res) => {
       ],
     });
     let response = chatCompletion.choices[0].message;
+    // console.log(response)
     res.status(200).json({ success: 1, response });
     
   } catch (error) {
