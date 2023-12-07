@@ -12,6 +12,7 @@ const openai = new OpenAI({
 });
  
 app.post("/generate-completion", async (req, res) => {
+  console.log(req)
   const { Name, startDate,endDate,location,destination,numPeople,budget,tripType,additionalInfo } = req.body;
   if (Name.length == 0 && startDate.length == 0   && endDate.length == 0 && location.length == 0 && destination.length == 0 && numPeople.length == 0 && budget.length == 0 && tripType.length == 0 && additionalInfo.length == 0 )
     return res.status(400).json({
@@ -30,7 +31,9 @@ app.post("/generate-completion", async (req, res) => {
     });
     let response = chatCompletion.choices[0].message;
     res.status(200).json({ success: 1, response });
+    
   } catch (error) {
+    console.log("Some error occured")
     res.sendStatus(500).json({
       success: 0,
       message: error.message,

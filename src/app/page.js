@@ -85,28 +85,30 @@ const TripPlanner = () => {
               <div className="date-field col-lg-6 col-md-6 col-sm-12">
                 <label htmlFor="startDate">From Date : </label>
                 <input
-                  type="date"
-                  id="startDate"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, startDate: e.target.value })
-                  }
-                  required
-                />
+  type="date"
+  id="startDate"
+  min={new Date().toISOString().split('T')[0]}
+  name="startDate"
+  value={formData.startDate}
+  onChange={(e) =>
+    setFormData({ ...formData, startDate: e.target.value })
+  }
+  required
+/>
               </div>
               <div className="date-field col-lg-6 col-md-6 col-sm-12">
                 <label htmlFor="endDate">To Date : </label>
                 <input
-                  type="date"
-                  id="endDate"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={(e) =>
-                    setFormData({ ...formData, endDate: e.target.value })
-                  }
-                  required
-                />
+  type="date"
+  id="endDate"
+  name="endDate"
+  min={formData.startDate} 
+  value={formData.endDate}
+  onChange={(e) =>
+    setFormData({ ...formData, endDate: e.target.value })
+  }
+  required
+/>
               </div>
             </div>
           </div>
