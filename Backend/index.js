@@ -10,7 +10,7 @@ app.use(cors());
 const openai = new OpenAI({
   apiKey: "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",
 });
-
+ 
 app.post("/generate-completion", async (req, res) => {
   const { Name, startDate,endDate,location,destination,numPeople,budget,tripType,additionalInfo } = req.body;
   if (Name.length == 0 && startDate.length == 0   && endDate.length == 0 && location.length == 0 && destination.length == 0 && numPeople.length == 0 && budget.length == 0 && tripType.length == 0 && additionalInfo.length == 0 )

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { generateResponse } from "../app/api";
 
 const TripPlanner = () => {
+  const [loading, setloading]= useState(false)
   const [responseText, setResponseText] = useState(undefined);
   const [formData, setFormData] = useState({
     Name: "",
@@ -17,6 +18,7 @@ const TripPlanner = () => {
   });
 
   const handleFormSubmit = async (e) => {
+    setloading(true)
     e.preventDefault();
     let reqBody = {
       Name: formData.Name,
@@ -29,12 +31,14 @@ const TripPlanner = () => {
       tripType: formData.tripType,
       additionalInfo: formData.additionalInfo,
     };
-    const response = await generateResponse(reqBody);
-    setResponseText(response.data.response.content);
-
-    console.log("------");
-    console.log(response.data.response.content);
-    console.log("------");
+    try {
+      const response = await generateResponse(reqBody);
+      setResponseText(response.data.response.content);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setloading(false); 
+    }
   };
 
   return (
@@ -184,7 +188,7 @@ const TripPlanner = () => {
           />
 
           <button type="submit" className="create-button">
-            Create My Trip
+          {loading ? "Loading..." : "Create My Trip"}
           </button>
           <div>
             {responseText && <p className="mt-3">{`${responseText}`}</p>}
