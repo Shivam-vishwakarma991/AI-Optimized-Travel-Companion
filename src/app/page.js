@@ -4,7 +4,7 @@ import { generateResponse } from "../app/api";
 
 const TripPlanner = () => {
   const [loading, setloading] = useState(false);
-  const [responseText, setResponseText] = useState(undefined);
+  const [responseText, setResponseText] = useState("\n");
   const [formData, setFormData] = useState({
     Name: "",
     location: "",
