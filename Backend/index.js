@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(cors());
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: process.env.OPENAI_API_KEY,
 });
  
 app.post("/generate-completion", async (req, res) => {
@@ -30,7 +30,6 @@ app.post("/generate-completion", async (req, res) => {
       ],
     });
     let response = chatCompletion.choices[0].message;
-    // console.log(response)
     res.status(200).json({ success: 1, response });
     
   } catch (error) {
